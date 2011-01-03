@@ -1,0 +1,6 @@
+Convert a csv file to OPML
+
+the csv should respect the format :
+
+http://site-or-feed-url.com/ [, category1[, category2]]
+
