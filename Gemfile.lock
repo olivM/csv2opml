@@ -1,16 +1,16 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    builder (3.0.0)
     fastercsv (1.5.3)
     feedbag (0.6)
       hpricot (>= 0.6)
     hpricot (0.8.3)
+    nokogiri (1.4.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  builder
   fastercsv
   feedbag
+  nokogiri

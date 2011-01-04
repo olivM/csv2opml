@@ -3,34 +3,36 @@ require 'rubygems'
 require './string.rb'
 require 'fastercsv'
 require 'feedbag'
-require 'builder'
+require 'nokogiri'
 
 
 class CSV2OPML
 
   def initialize
     
-    opml = Array.new
+    feeds = Array.new
     FasterCSV.foreach(ARGV[0]) do |row|
-      opml << [Feedbag.find(row.shift)[0], row]
+      feeds << [Feedbag.find(row.shift)[0], row]
     end
     
-    p opml
+    p feeds
 
-    xml = Builder::XmlMarkup.new( :indent => 2 )
-    xml.instruct! :xml, :encoding => "UTF-8"
-    xml.opml do |o|
-      o.head do |h| 
-        h.title ARGV[0]
-      end
-      o.body do |b|
-        opml.each do |feed|
-          b.outline(:text => feed[0], :url => feed[0])
-        end
-      end
+    opml = Nokogiri::XML::Builder.new do |xml|
+      xml.opml {
+        xml.head {
+          xml.title ARGV[0]
+        }
+        xml.body {
+          feeds.each do |feed|
+            xml.outline(:text => feed[0], :url => feed[0])
+          end
+        }
+      }
     end
     
-    p xml
+    File.open("#{ARGV[0]}.opml", "w") do |f|
+      f.write opml.to_xml
+    end
     
   end
   
